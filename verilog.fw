@@ -1,0 +1,63 @@
+@p maximum_input_line_length = infinity
+
+@O@<verilog.con@>==@{
+
+source_text
+   : descriptionList
+   |
+   .
+
+descriptionList
+    : description
+    | descriptionList description
+    .
+
+description
+   : module_declaration
+/* |   interface_declaration
+   |   program_declaration
+   |   package_declaration
+   |   package_item
+   |   bind_directive
+   //  unsupported // IEEE: config_declaration
+   //          // Verilator only
+   |   vltItem                 { }
+   |   error                   { } */
+   .
+
+module_declaration
+    : modFront importsAndParametersE portsStarE ';' module_itemListE 'endmodule' endLabelE
+/*    | udpFront parameter_port_listE portsStarE ';' module_itemListE yENDPRIMITIVE endLabelE
+    | yEXTERN modFront parameter_port_listE portsStarE ';' */
+    .
+
+modFront
+    : 'module' lifetimeE idAny
+    .
+
+
+
+lifetimeE
+    :
+    | lifetime
+    .
+
+lifetime
+    : 'static'
+    | 'automatic'
+    ;
+
+idAny
+    : yaID__aPACKAGE
+    | yaID__aTYPE
+    | yaID__ETC
+    ;
+
+@}
+
+
+@O@<verilog.gla@>==@{
+    yaID__aPACKAGE: $[0-1]
+    yaID__aTYPE: $[0-1]
+    yaID__ETC: $[0-1]
+@}
